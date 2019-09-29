@@ -4,21 +4,24 @@ const fs = require('fs');
 const exec = require('child_process').exec;
 const dayjs = require('dayjs');
 
-app.use(async (ctx, next) => {
+app.use(async (ctx) => {
   if (ctx.url && ctx.method === 'GET') {
     let content = ctx.query;
-    content.fileName = dayjs().format('YYYY-MM');
-    content.date = dayjs().format('YYYY-MM-DD');
-    const fileName = `${content.fileName}.md`;
+    const fileName = `${dayjs().format('YYYY-MM')}.md`;
     const fileContent = `[${content.title}](${content.link})</br></br>`;
-    fs.appendFile(fileName, fileContent, function(error) {
+    fs.exists('bookmarks', (exists) => {
+      !exists && fs.mkdirSync('bookmarks');
+    })
+    fs.appendFile(`bookmarks\\${fileName}`, fileContent, function(error) {
       if (error) {
         ctx.throw(error)
       }
       console.log('写入成功');
+      console.log('正在同步至GitHub中......');
       let execGit = exec(`git pull && git add . && git commit -m ${fileName} && git push -u origin master`, (err, stdout) => {
         if (err) console.log(err);
         console.log(stdout);
+        console.log('已完成同步至GitHub！');
         execGit.kill();
       })
     })
