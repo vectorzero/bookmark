@@ -14,15 +14,13 @@ app.use(async (ctx) => {
   })
   fs.appendFile(`bookmarks\\${fileName}`, fileContent, (error) => {
     error && ctx.throw(error);
-    console.log('写入成功');
-    console.log('正在同步至GitHub');
+    console.log('写入成功，正在同步至GitHub！');
     const spinner = ora({
-      text: "网速有点慢，请勿中断该进程！"
+      text: "网速有点慢，请勿中断该进程！\n"
     }).start();
     let execGit = exec(`git pull && git add . && git commit -m ${fileName} && git push -u origin master`, (err, stdout) => {
-      if (err) console.log(err);
+      err && console.log(err);
       console.log(stdout);
-      spinner.stop();
       spinner.succeed("已完成同步！");
       execGit.kill();
     })
