@@ -22,6 +22,6 @@ javascript: ((function(s, d, e) { var u = location; var f = 'http://localhost:30
 
 ### 启动服务
 
-`node server.js` 或者双击 *satrt.bat* 
+`node server.js` 或者双击 *start.bat* 文件 
 
-点击 *fav* 即可收藏当前网站至GitHub
+点击 *fav* 即可同步收藏当前网站至GitHub
