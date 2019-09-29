@@ -3,6 +3,7 @@ const app = new Koa();
 const fs = require('fs');
 const exec = require('child_process').exec;
 const dayjs = require('dayjs');
+const ora = require("ora");
 
 app.use(async (ctx) => {
   let content = ctx.query;
@@ -14,11 +15,18 @@ app.use(async (ctx) => {
   fs.appendFile(`bookmarks\\${fileName}`, fileContent, (error) => {
     error && ctx.throw(error);
     console.log('写入成功');
-    console.log('正在同步至GitHub,请勿退出该进程！');
+    const spinner = ora({
+      text: "正在同步至GitHub,请勿中断该进程！"
+    }).start();
+    setTimeout(() => {
+      spinner.color = "yellow";
+      spinner.text = "网速有点慢，请稍安勿躁！";
+    }, 1000);
     let execGit = exec(`git pull && git add . && git commit -m ${fileName} && git push -u origin master`, (err, stdout) => {
       if (err) console.log(err);
       console.log(stdout);
-      console.log('已完成同步！');
+      spinner.stop();
+      spinner.succeed("已完成同步！");
       execGit.kill();
     })
   })
