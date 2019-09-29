@@ -17,7 +17,7 @@ app.use(async (ctx) => {
         ctx.throw(error)
       }
       console.log('写入成功');
-      console.log('正在同步至GitHub中......');
+      console.log('正在同步至GitHub中...,请勿退出该进程');
       let execGit = exec(`git pull && git add . && git commit -m ${fileName} && git push -u origin master`, (err, stdout) => {
         if (err) console.log(err);
         console.log(stdout);
