@@ -15,13 +15,10 @@ app.use(async (ctx) => {
   fs.appendFile(`bookmarks\\${fileName}`, fileContent, (error) => {
     error && ctx.throw(error);
     console.log('写入成功');
+    console.log('正在同步至GitHub');
     const spinner = ora({
-      text: "正在同步至GitHub,请勿中断该进程！"
+      text: "网速有点慢，请勿中断该进程！"
     }).start();
-    setTimeout(() => {
-      spinner.color = "yellow";
-      spinner.text = "网速有点慢，请稍安勿躁！";
-    }, 1000);
     let execGit = exec(`git pull && git add . && git commit -m ${fileName} && git push -u origin master`, (err, stdout) => {
       if (err) console.log(err);
       console.log(stdout);
