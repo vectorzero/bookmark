@@ -16,20 +16,9 @@ app.use(async (ctx, next) => {
         ctx.throw(error)
       }
       console.log('写入成功');
-      const cmds = [
-        "git pull",
-        "git add .",
-        "git commit -m 'xxx'",
-        "git push -u origin master"
-      ]
-      cmds.forEach((cmd,i) => {
-        setTimeout(() => {
-          console.log(cmd);
-          exec(cmd, (err, stdout) => {
-            if (err) console.log(err);
-            console.log(stdout)
-          })
-        }, i * 1000)
+      exec(`git pull && git add . && git commit -m ${fileName} && git push -u origin master`, (err, stdout) => {
+        if (err) console.log(err);
+        console.log(stdout)
       })
     })
     ctx.body = content;
