@@ -8,7 +8,9 @@
 
 3. `git remote set-url origin 你的新仓库地址`
 
-4. `npm install`
+4. `npm install nodemon -g`
+
+5. `npm install`
 
 ### 添加书签
 
@@ -22,6 +24,6 @@ javascript: ((function(s, d, e) { var u = location; var f = 'http://localhost:30
 
 ### 启动服务
 
-`node server.js`
+`nodemon server.js` 或者双击 *start.bat*
 
 点击 *fav* 即可同步收藏当前网站至GitHub
