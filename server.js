@@ -9,7 +9,7 @@ const shell = require('shelljs');
 app.use(async (ctx) => {
   const spinner = ora();
   let content = ctx.query;
-  spinner.text = '正在拉取GitHub上的变动！';
+  spinner.text = '正在拉取GitHub上的变动！\n';
   spinner.start();
   shell.exec('git pull', (code, stdout, stderr) => {
     if (code !== 0) {
@@ -29,19 +29,18 @@ app.use(async (ctx) => {
         if (error) {
           console.log('写入失败，请重启程序！');
           ctx.throw(error);
+        }
+      })
+      spinner.text = '正在同步中，请勿中断进程！\n';
+      spinner.start();
+      shell.exec(`git add . && git commit -m ${fileName} && git push -u origin master`, (multiCode, multiStdout, multiErr) => {
+        if (multiCode !== 0) {
+          spinner.text = multiErr;
+          spinner.fail("同步失败！");
+          shell.exit(1);
         } else {
-          spinner.text = '正在同步中，请勿中断进程！';
-          spinner.start();
-          shell.exec(`git add . && git commit -m ${fileName} && git push -u origin master`, (multiCode, multiStdout, multiErr) => {
-            if (multiCode !== 0) {
-              spinner.text = multiErr;
-              spinner.fail("同步失败！");
-              shell.exit(1);
-            } else {
-              spinner.text = multiStdout;
-              spinner.succeed("已完成同步！");
-            }
-          })
+          spinner.text = multiStdout;
+          spinner.succeed("已完成同步！");
         }
       })
     }
