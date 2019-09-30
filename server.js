@@ -10,8 +10,8 @@ app.use(async (ctx) => {
   const spinner = ora();
   let content = ctx.query;
   shell.exec('git pull', (code, stdout, stderr) => {
-    spinner.start();
     spinner.text = '正在拉取GitHub上的变动！'
+    spinner.start();
     if (code !== 0) {
       console.log(stderr);
       spinner.fail("拉取失败，请手动更新代码！");
@@ -26,6 +26,7 @@ app.use(async (ctx) => {
       fs.appendFile(`bookmarks\\${fileName}`, fileContent, (error) => {
         error && ctx.throw(error);
         console.log('写入成功，正在同步至GitHub！');
+        spinner.text = '正在同步中，请勿中断进程！';
         spinner.start();
         shell.exec(`git add . && git commit -m ${fileName} && git push -u origin master`, (multiCode, multiStdout, multiErr) => {
           if (multiCode !== 0) {
