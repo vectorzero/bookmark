@@ -27,7 +27,6 @@ app.use(async (ctx) => {
         error && ctx.throw(error);
         console.log('写入成功，正在同步至GitHub！');
         spinner.start();
-        spinner.text = '正在同步中，请勿中断进程！';
         shell.exec(`git add . && git commit -m ${fileName} && git push -u origin master`, (multiCode, multiStdout, multiErr) => {
           if (multiCode !== 0) {
             console.log(multiErr)
