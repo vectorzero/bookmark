@@ -7,7 +7,7 @@ const ora = require("ora");
 const shell = require('shelljs');
 
 app.use(async (ctx) => {
-  const spinner = ora();
+  let spinner = ora();
   let content = ctx.query;
   spinner.text = '正在拉取GitHub上的变动！\n';
   spinner.start();
@@ -24,13 +24,13 @@ app.use(async (ctx) => {
       fs.exists('bookmarks', (exists) => {
         !exists && fs.mkdirSync('bookmarks');
       })
-      console.log('写入成功，正在同步至GitHub！');
       fs.appendFile(`bookmarks\\${fileName}`, fileContent, (error) => {
         if (error) {
-          console.log('写入失败，请重启程序！');
-          ctx.throw(error);
+          console.log('文件内容写入失败，请重启程序！');
+          return false;
         }
       })
+      console.log('文件内容写入成功，正在同步至GitHub！');
       spinner.text = '正在同步中，请勿中断进程！\n';
       spinner.start();
       shell.exec(`git add . && git commit -m ${fileName} && git push -u origin master`, (multiCode, multiStdout, multiErr) => {
