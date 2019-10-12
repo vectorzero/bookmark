@@ -7,7 +7,6 @@ const ora = require("ora");
 const shell = require('shelljs');
 
 app.use(async (ctx, next) => {
-  await next();
   let spinner = ora();
   let content = ctx.query;
   console.log('变动');
