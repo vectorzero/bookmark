@@ -9,7 +9,6 @@ const shell = require('shelljs');
 app.use(async (ctx, next) => {
   let spinner = ora();
   let content = ctx.query;
-  console.log('变动');
   spinner.text = '正在拉取GitHub上的变动！\n';
   spinner.start();
   shell.exec('git pull', (code, stdout, stderr) => {
