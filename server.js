@@ -34,6 +34,7 @@ app.use(async (ctx) => {
       spinner.text = '正在同步中，请勿中断进程！\n';
       spinner.start();
       shell.exec(`git add . && git commit -m ${fileName} && git push -u origin master`, (multiCode, multiStdout, multiErr) => {
+        console.log(multiCode);
         if (multiCode !== 0) {
           spinner.text = multiErr;
           spinner.fail("同步失败！");
