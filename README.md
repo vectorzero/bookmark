@@ -4,13 +4,15 @@
 
 1. Fork该项目 
 
-2. 清空 *bookmarks* 文件夹
+2. git clone 该项目
 
-3. `git remote set-url origin 你的新仓库地址`
+3. 清空 *bookmarks* 文件夹
 
-4. `npm install nodemon -g`
+4. `git remote set-url origin 你的新仓库地址`
 
-5. `npm install`
+5. `npm install nodemon -g`
+
+6. `npm install`
 
 ### 添加书签
 
